@@ -1,5 +1,10 @@
 function! s:ShowDocumentation(word)
-    execute '!nu -c "help '. a:word .'"'
+    let nu_help = system('nu -c "help '. a:word .'"')
+    if v:shell_error == 0
+        echo nu_help
+    else
+        execute '!man '. a:word
+    endif
 endfunction
 command! -nargs=1 ShowDocumentation :call s:ShowDocumentation(<f-args>)
 

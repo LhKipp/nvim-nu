@@ -4,6 +4,10 @@
 
 ---
 
+**Warning: This is WIP! The highlighting, nor folding are perfect. PR's are welcome**
+
+---
+
 ### Table of contents
 
 * [Requirements](#requirements)

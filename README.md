@@ -1,5 +1,7 @@
 # nvim-nu - Basic editor support for the nushell language
 
+![nu example](assets/nu-example.png)
+
 ---
 
 ### Table of contents

@@ -4,7 +4,7 @@
 
 ---
 
-**Warning: This is WIP! The highlighting, nor folding are perfect. PR's are welcome**
+**Warning: This plugin uses a [tree-sitter grammar](https://github.com/LhKipp/tree-sitter-nu) made for nu version ~0.28. As nushell evolves quickly, the tree-sitter plugin might be outdated by now, resulting in poor tree-sitter related functionality (highlighting, code-folding, ...). PR's are welcome**
 
 ---
 
@@ -16,7 +16,7 @@
 
 # Requirements
 
-- Neovim [nightly](https://github.com/neovim/neovim#install-from-source)
+- Neovim version >= 0.5
 - A [nu](https://github.com/nushell/nushell/releases) binary in your path
 - A C compiler in your path and libstdc++ installed ([Windows users please read this!](https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support)).
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/blob/master/README.md#quickstart) installed
@@ -30,5 +30,3 @@ E.g., if you are using [vim-plug](https://github.com/junegunn/vim-plug), put thi
 ```vim
 Plug 'LhKipp/nvim-nu', {'do': ':TSInstall nu'}
 ```
-
-

@@ -4,7 +4,7 @@
 
 ---
 
-**Warning: This plugin uses a [tree-sitter grammar](https://github.com/LhKipp/tree-sitter-nu) made for nu version ~0.28. As nushell evolves quickly, the tree-sitter plugin might be outdated by now, resulting in poor tree-sitter related functionality (highlighting, code-folding, ...). PR's are welcome**
+**Warning: This plugin uses a [tree-sitter grammar](https://github.com/LhKipp/tree-sitter-nu) made for nu version ~0.45. As nushell evolves quickly, the tree-sitter plugin might be outdated by now, resulting in poor tree-sitter related functionality (highlighting, code-folding, ...). PR's are welcome**
 
 ---
 

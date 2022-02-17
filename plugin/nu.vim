@@ -9,4 +9,3 @@ endfunction
 command! -nargs=1 ShowDocumentation :call s:ShowDocumentation(<f-args>)
 
 lua require('nu.tree_sitter_config')
-lua require('nu.lsp')

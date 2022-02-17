@@ -7,4 +7,3 @@ parser_config.nu = {
   },
   filetype = "nu"
 }
-

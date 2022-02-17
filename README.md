@@ -4,7 +4,7 @@
 
 ---
 
-**Warning: This plugin uses a [tree-sitter grammar](https://github.com/LhKipp/tree-sitter-nu) made for nu version ~0.45. As nushell evolves quickly, the tree-sitter plugin might be outdated by now, resulting in poor tree-sitter related functionality (highlighting, code-folding, ...). PR's are welcome**
+**Info: This plugin was made for nu version ~0.45. As nushell evolves quickly, the plugin might not work perfectly for later versions. PR's are welcome**
 
 ---
 
@@ -12,14 +12,15 @@
 
 * [Requirements](#requirements)
 * [Installation](#installation)
+* [Configuration](#installation)
 ---
 
 # Requirements
 
 - Neovim version >= 0.5
 - A [nu](https://github.com/nushell/nushell/releases) binary in your path
-- A C compiler in your path and libstdc++ installed ([Windows users please read this!](https://github.com/nvim-treesitter/nvim-treesitter/wiki/Windows-support)).
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/blob/master/README.md#quickstart) installed
+- [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim) if nu-command names shall be suggested
 
 # Installation
 
@@ -29,4 +30,17 @@ E.g., if you are using [vim-plug](https://github.com/junegunn/vim-plug), put thi
 
 ```vim
 Plug 'LhKipp/nvim-nu', {'do': ':TSInstall nu'}
+```
+
+Don't forget to call setup :smirk:
+```lua
+require('nu').setup{}
+```
+
+## Configuration
+(Default values are shown)
+```lua
+require('nu').setup({
+    complete_cmd_names = true, -- requires https://github.com/jose-elias-alvarez/null-ls.nvim
+})
 ```

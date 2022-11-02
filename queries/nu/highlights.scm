@@ -29,8 +29,10 @@
 [
  "if"
  "else"
+ "not"
  "let"
  "def"
+ "def-env"
  "export"
 ] @keyword
 

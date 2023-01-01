@@ -2,7 +2,7 @@ local null_ls = require("null-ls")
 local log = require("nu.log")
 local vim = vim
 
-M = {}
+local M = {}
 
 M.all_cmds = {}
 
@@ -25,7 +25,7 @@ function M.set_cmd_list(list)
         return
     end
 
-    M.all_cmds = list
+    M.all_cmds = list or {}
 end
 
 local function cmds_to_check(content, row, col)
@@ -56,6 +56,7 @@ end
 local function find_commands(text)
     local results = {}
     local text_first_char = text:sub(1,1)
+    vim.pretty_print(M)
     for _, cmd in ipairs(M.all_cmds) do
         if string.find(cmd, text) ~= nil then
             table.insert(results, cmd)

@@ -14,9 +14,7 @@ function M.setup(options)
         local lsp = require('nu.lsp')
 
         local cmd_list = M.options.cmd_list
-        if cmd_list then
-            lsp.set_cmd_list(cmd_list)
-        end
+        lsp.set_cmd_list(cmd_list)
     end
 end
 

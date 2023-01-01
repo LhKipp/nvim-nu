@@ -42,5 +42,25 @@ require('nu').setup{}
 ```lua
 require('nu').setup({
     complete_cmd_names = true, -- requires https://github.com/jose-elias-alvarez/null-ls.nvim
+    cmd_list = <see below>, -- table of string, containing all command to be used in completion
 })
+```
+
+`cmd_list` allow user to make their own list of commands, generate command list
+at each start up can make completion more environment aware. The default value
+is:
+
+```lua
+local cmd_list
+local cmd = [[nu -c 'help commands | get name | str join "\n"']]
+local help_output = vim.fn.system(cmd)
+if vim.v.shell_error == 0 then
+    cmd_list = vim.fn.split(help_output, "\n")
+end
+```
+
+If you want to include your customize commands in completion, you can do:
+
+```lua
+local cmd = [[nu --config <path-to-your-config> -c 'help commands | get name | str join "\n"']]
 ```

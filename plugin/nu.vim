@@ -1,5 +1,5 @@
 function! s:ShowDocumentation(word)
-    let nu_help = system('nu -c "help '. a:word .'"')
+    let nu_help = system('nu -c "help '. a:word .' | str replace -a `\\u001B\\[[0-9;]*m` ``"')
     if v:shell_error == 0
         echo nu_help
     else

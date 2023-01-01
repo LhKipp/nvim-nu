@@ -11,7 +11,12 @@ function M.setup(options)
     M.options = v.tbl_extend("keep", options, defaultConfig())
 
     if M.options.complete_cmd_names then
-        require('nu.lsp')
+        local lsp = require('nu.lsp')
+
+        local cmd_list = M.options.cmd_list
+        if cmd_list then
+            lsp.set_cmd_list(cmd_list)
+        end
     end
 end
 

@@ -2,12 +2,50 @@ local null_ls = require("null-ls")
 local log = require("nu.log")
 local vim = vim
 
+local M = {}
+
+local all_cmds = {}
+
+local function cmd_names_from_cmd(cmd)
+    local Job = require('plenary.job')
+
+    log.debug("Running shell command", cmd)
+
+    local proc = Job:new({
+        command = "sh",
+        args = { "-c", cmd },
+        cwd = '.',
+        enable_recording = true,
+    })
+    proc:start()
+    proc:wait()
+
+    if proc.code ~= 0 then
+        log.error("Command failure:\n", table.concat(proc:stderr_result(), '\n'))
+        return {}
+    end
+    return proc:result()
+end
+
+function M.init(cmd_names)
+    if type(cmd_names) == "table" then
+        all_cmds = cmd_names
+    elseif type(cmd_names) == "function" then
+        all_cmds = cmd_names()
+    elseif type(cmd_names) == "string" then
+        all_cmds = cmd_names_from_cmd(cmd_names)
+    else
+        log.warn("all_cmd_names is expected to be a table, function or string. Got", type(cmd_names))
+    end
+    log.debug("Initialised nu lsp cmd_names to", table.concat(all_cmds, " "))
+end
+
 local function cmds_to_check(content, row, col)
     local cur_row = string.sub(content[row], 0, col + 1) -- Only until col is necessary
     log.trace("Completing line:", cur_row)
     local tokens = {}
     for token in string.gmatch(cur_row, "[^%s]+") do
-       table.insert(tokens, token)
+        table.insert(tokens, token)
     end
     local result = {}
     local tokens_len = #tokens
@@ -25,18 +63,16 @@ local function cmds_to_check(content, row, col)
     end
     log.trace("Found following tokens to complete", vim.inspect(result))
     return result
-end  
-
-local all_cmds = { "alias", "all", "any", "append", "binary", "bool", "build-string", "cal", "cd", "char", "collect", "columns", "command", "compact", "cp", "date date", "date format", "date humanize", "date list-timezone", "date now", "date parser", "datetime", "date to-table", "date to-timezone", "date utils", "debug", "decimal", "decode", "def", "default", "def-env", "describe", "detect-columns", "dfr aggregate", "dfr all-false", "dfr all-true", "dfr append", "dfr arg-max", "dfr arg-min", "dfr arg-sort", "dfr arg-true", "dfr arg-unique", "dfr column", "dfr command", "dfr concatenate", "dfr contains", "dfr cumulative", "dfr describe", "dfr drop", "dfr drop-duplicates", "dfr drop-nulls", "dfr dtypes", "dfr dummies", "dfr filter-with", "dfr first", "dfr get", "dfr get-day", "dfr get-hour", "dfr get-minute", "dfr get-month", "dfr get-nanosecond", "dfr get-ordinal", "dfr get-second", "dfr get-week", "dfr get-weekday", "dfr get-year", "dfr groupby", "dfr is-duplicated", "dfr is-in", "dfr is-not_null", "dfr is-null", "dfr is-unique", "dfr join", "dfr last", "dfr melt", "dfr n-null", "dfr not", "dfr n-unique", "dfr open", "dfr pivot", "dfr rename", "dfr rename", "dfr replace", "dfr replace-all", "dfr rolling", "dfr sample", "dfr set", "dfr set-with_idx", "dfr shape", "dfr shift", "dfr slice", "dfr sort", "dfr strftime", "dfr str-lengths", "dfr str-slice", "dfr take", "dfr to-csv", "dfr to-df", "dfr to-lowercase", "dfr to-nu", "dfr to-parquet", "dfr to-uppercase", "dfr unique", "dfr value-counts", "dfr with-column", "do", "drop column", "drop drop", "drop nth", "each", "each-group", "each-window", "echo", "empty", "env", "error-make", "every", "fetch", "filesize", "find", "first", "flatten", "fmt", "for", "from command", "from csv", "from delimited", "from eml", "from ics", "from ini", "from json", "from ods", "from ssv", "from toml", "from tsv", "from url", "from vcf", "from xlsx", "from xml", "from yaml", "generators", "get", "group-by", "hash base64", "hash generic-digest", "hash hash", "hash md5", "hash sha256", "help", "hide", "history", "if", "ignore", "int", "keep ", "keep until", "keep while", "last", "length", "let", "let-env", "lines", "load-env", "ls", "math abs", "math avg", "math ceil", "math eval", "math floor", "math math", "math max", "math median", "math min", "math mode", "math product", "math reducers", "math round", "math sqrt", "math stddev", "math sum", "math utils", "math variance", "merge", "metadata", "mkdir", "module", "move", "mv", "open", "par-each", "par-each group", "parse", "path basename", "path dirname", "path exists", "path expand", "path join", "path parse", "path path", "path relative-to", "path split", "path type", "prepend", "random bool", "random chars", "random decimal", "random dice", "random integer", "random random", "random uuid", "range", "reduce", "register", "reject", "rename", "reverse", "rm", "rotate", "save", "select", "seq", "seq-date", "shells enter", "shells exit", "shuffle", "size", "skip skip", "skip skip-until", "skip skip-while", "sort-by", "source", "split-by", "split chars", "split column", "split command", "split row", "str camel-case", "str capitalize", "str collect", "str contains", "str downcase", "str ends-with", "str find-replace", "str index-of", "string", "str kebab-case", "str length", "str lpad", "str pascal-case", "str reverse", "str rpad", "str screaming-snake_case", "str snake-case", "str starts-with", "str str", "str substring", "str trim/trim", "str upcase", "to command", "to csv", "to delimited", "to html", "to json", "to md", "to toml", "to tsv", "touch", "to url", "to xml", "to yaml", "transpose", "tutor", "uniq", "update", "update cells", "url host", "url path", "url query", "url scheme", "url url", "use", "version", "where", "with-env", "wrap", "zip", "end", }
+end
 
 local function find_commands(text)
     local results = {}
-    local text_first_char = text:sub(1,1)
-    for _, cmd in ipairs(all_cmds) do 
+    local text_first_char = text:sub(1, 1)
+    for _, cmd in ipairs(all_cmds) do
         if string.find(cmd, text) ~= nil then
             table.insert(results, cmd)
         end
-        if cmd:sub(1,1) > text_first_char then
+        if cmd:sub(1, 1) > text_first_char then
             break
         end
     end
@@ -64,7 +100,7 @@ local nu_lsp = {
                         else
                             matched_cmd_txt = matched_cmd
                         end
-                        table.insert(cmd_items, {label = matched_cmd_txt, insertText = matched_cmd_txt})
+                        table.insert(cmd_items, { label = matched_cmd_txt, insertText = matched_cmd_txt })
                     end
                     return {
                         {
@@ -79,3 +115,5 @@ local nu_lsp = {
 }
 
 null_ls.register(nu_lsp)
+
+return M

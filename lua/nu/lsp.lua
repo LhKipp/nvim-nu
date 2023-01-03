@@ -1,4 +1,6 @@
 local null_ls = require("null-ls")
+local null_ls_methods = require("null-ls.methods")
+local null_ls_helpers = require("null-ls.helpers")
 local log = require("nu.log")
 local vim = vim
 
@@ -114,6 +116,38 @@ local nu_lsp = {
     },
 }
 
-null_ls.register(nu_lsp)
+local nu_hover = null_ls_helpers.make_builtin {
+    name = "nu_hover",
+    factory = null_ls_helpers.generator_factory,
+    generator_opts = {
+        command = "nu",
+        format = "raw",
+        args = function(params)
+            local cword = vim.fn.expand("<cword>")
+            local nu_cmd =
+            'if (help commands | where name == "' ..
+                cword ..
+                '" | length ) > 0 {help ' ..
+                cword .. ' | str replace -a `\\u001B\\[[0-9;]*m` ``} else {man ' .. cword .. '}'
+            log.trace("Executing", nu_cmd)
+            return { "-c", nu_cmd }
+        end,
+        on_output = function(params, done)
+            if params.err ~= nil then
+                done({ params.err })
+            else
+                done({ params.output })
+            end
+        end
+    },
+    filetypes = { "nu" },
+    method = null_ls_methods.internal.HOVER,
+    meta = {
+        url = "help",
+        description = "nushell help output"
+    }
+}
+
+null_ls.register({ nu_hover, nu_lsp })
 
 return M

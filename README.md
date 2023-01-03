@@ -20,7 +20,7 @@
 - Neovim version >= 0.5
 - A [nu](https://github.com/nushell/nushell/releases) binary in your path
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/blob/master/README.md#quickstart) installed
-- [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim) if nu-command names shall be suggested
+- Optionally [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim) to enable lsp features like hover (aka help) or command completion
 
 # Installation
 
@@ -50,3 +50,12 @@ require'nu'.setup{
     all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']]
 }
 ```
+
+To enable hover (aka help) `vim.lsp.buf.hover` must be mapped. You can do so for example in your `ftplugin/nu.lua`
+```lua
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = true })
+```
+
+## Known issues (PR's welcome)
+
+* Calling `vim.lsp.buf.hover` on a subcommand does not show the help for the subcommand

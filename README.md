@@ -37,23 +37,27 @@ Don't forget to call setup :smirk:
 require'nu'.setup{}
 ```
 
+## LSP Features
+
+[null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim) needs to be installed to have lsp features available. Currently only command name completion and hover (aka help) are supported.
+
+Make sure to have a mapping set up for hover in nushell files! E.G. in your `ftplugin/nu.lua`
+```lua
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = true })
+```
+
 ## Configuration
 (Default values are shown)
 ```lua
 require'nu'.setup{
-    complete_cmd_names = true, -- requires https://github.com/jose-elias-alvarez/null-ls.nvim
-    -- all_cmd_names is the source for the cmd name completion.
+    use_lsp_features = true, -- requires https://github.com/jose-elias-alvarez/null-ls.nvim
+    -- lsp_feature: all_cmd_names is the source for the cmd name completion.
     -- It can be
     --  * a string, which is interpreted as a shell command and the returned list is the source for completions (requires plenary.nvim)
     --  * a list, which is the direct source for completions (e.G. all_cmd_names = {"echo", "to csv", ...})
-    --  * a function, returning a list of strings and the return value is the source for completions
+    --  * a function, returning a list of strings and the return value is used as the source for completions
     all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']]
 }
-```
-
-To enable hover (aka help) `vim.lsp.buf.hover` must be mapped. You can do so for example in your `ftplugin/nu.lua`
-```lua
-vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = true })
 ```
 
 ## Known issues (PR's welcome)

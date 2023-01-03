@@ -3,7 +3,7 @@ local M = {}
 
 local function defaultConfig()
     return {
-        complete_cmd_names = true,
+        use_lsp_features = true,
         all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']]
     }
 end
@@ -19,7 +19,7 @@ function M._init()
     end
     is_initialised = true
 
-    if M.options.complete_cmd_names then
+    if M.options.use_lsp_features then
         require 'nu.lsp'.init(M.options.all_cmd_names)
     end
 end

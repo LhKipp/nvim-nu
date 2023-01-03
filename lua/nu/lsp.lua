@@ -37,7 +37,7 @@ function M.init(cmd_names)
     elseif type(cmd_names) == "string" then
         all_cmds = cmd_names_from_cmd(cmd_names)
     else
-        log.warn("all_cmd_names is expected to be a table, function or string. Got", type(cmd_names))
+        log.error("all_cmd_names is expected to be a table, function or string. Got", type(cmd_names))
     end
     log.debug("Initialised nu lsp cmd_names to", table.concat(all_cmds, " "))
 end

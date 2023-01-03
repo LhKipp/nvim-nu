@@ -7,3 +7,9 @@ parser_config.nu = {
     },
     filetype = "nu"
 }
+
+vim.filetype.add({
+    extension = {
+        nu = "nu"
+    }
+})

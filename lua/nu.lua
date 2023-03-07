@@ -9,7 +9,7 @@ local function defaultConfig()
 end
 
 function M.setup(options)
-    M.options = v.tbl_extend("keep", options, defaultConfig())
+    M.options = v.tbl_extend("keep", options or {}, defaultConfig())
 end
 
 local is_initialised = false
@@ -19,7 +19,7 @@ function M._init()
     end
     is_initialised = true
 
-    if M.options.use_lsp_features then
+    if M.options and M.options.use_lsp_features then
         require 'nu.lsp'.init(M.options.all_cmd_names)
     end
 end

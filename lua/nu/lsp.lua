@@ -14,7 +14,7 @@ local function cmd_names_from_cmd(cmd)
     log.debug("Running shell command", cmd)
 
     local proc = Job:new({
-        command = "sh",
+        command = "nu",
         args = { "-c", cmd },
         cwd = '.',
         enable_recording = true,

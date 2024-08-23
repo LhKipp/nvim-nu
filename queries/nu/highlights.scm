@@ -38,6 +38,7 @@
  "false"
  "and"
  "or"
+ "alias"
 ] @keyword
 
 [
@@ -59,3 +60,9 @@
  "," 
  ";" 
 ] @delimiter
+
+["[" "]" "{" "}"] @punctuation.bracket
+
+["(" ")"] @keyword.directive
+
+

@@ -20,7 +20,7 @@
 - Neovim version >= 0.5
 - A [nu](https://github.com/nushell/nushell/releases) binary in your path
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter/blob/master/README.md#quickstart) installed
-- Optionally [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim) to enable lsp features like hover (aka help) or command completion
+- Optionally [none-ls.nvim](https://github.com/nvimtools/none-ls.nvim) to enable lsp features like hover (aka help) or command completion
 
 # Installation
 

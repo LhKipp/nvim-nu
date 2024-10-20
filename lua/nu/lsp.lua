@@ -128,7 +128,7 @@ local nu_hover = null_ls_helpers.make_builtin {
             'if (help commands | where name == "' ..
                 cword ..
                 '" | length ) > 0 {help ' ..
-                cword .. ' | str replace -a `\\u001B\\[[0-9;]*m` ``} else {man ' .. cword .. '}'
+                cword .. ' | ansi strip } else {man ' .. cword .. '}'
             log.trace("Executing", nu_cmd)
             return { "-c", nu_cmd }
         end,

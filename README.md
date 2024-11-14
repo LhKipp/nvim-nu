@@ -12,7 +12,7 @@
 
 * [Requirements](#requirements)
 * [Installation](#installation)
-* [Configuration](#installation)
+* [Configuration](#configuration)
 ---
 
 # Requirements
@@ -26,16 +26,28 @@
 
 You can install `nvim-nu` with your favorite package manager (or using the native `package` feature of vim, see `:h packages`).
 
-E.g., if you are using [vim-plug](https://github.com/junegunn/vim-plug), put this in your `init.vim` file:
+<details open>
+    <summary>Lazy</summary>
+
+```lua
+{
+    'LhKipp/nvim-nu',
+    build = ':TSInstall nu',
+    opts = {}
+}
+```
+</details>
+
+<details>
+    <summary>vim-plug</summary>
 
 ```vim
 Plug 'LhKipp/nvim-nu', {'do': ':TSInstall nu'}
-```
 
-Don't forget to call setup :smirk:
-```lua
+" Don't forget to call setup
 require'nu'.setup{}
 ```
+</details>
 
 ## LSP Features
 
@@ -60,6 +72,6 @@ require'nu'.setup{
 }
 ```
 
-## Known issues (PR's welcome)
+# Known issues (PR's welcome)
 
 * Calling `vim.lsp.buf.hover` on a subcommand does not show the help for the subcommand
